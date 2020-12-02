@@ -1,5 +1,5 @@
 data:
-  env: sit
+  env: config-client-sit
   user:
     username: sit
     password: sitpwd

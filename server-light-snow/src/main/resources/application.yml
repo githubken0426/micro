@@ -1,0 +1,45 @@
+server:
+  port: 1001
+#spring cloud eureka优先使用spring.application.name值来覆盖eureka.instance.appname的值
+spring:
+  application:
+    name: server-light-snow
+
+info:
+  app:
+    name: @project.artifactId@
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@
+  author:
+    name: light-snow
+
+eureka:
+  dashboard:
+    path: / #default:'/', eureka web ui访问路径
+  instance:
+    hostname: @project.artifactId@
+    appname: server
+    prefer-ip-address: false 
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+  client:
+    healthcheck:
+      enabled: true
+    fetch-registry: false #default:'true' 此客户端是否获取eureka服务器注册表上的注册信息
+    register-with-eureka: false #default:'true' 实例是否在eureka服务器上注册自己的信息以供其他服务发现
+    registery-fetch-interval-seconds: 30
+    prefer-same-zone-eureka: true
+    region: DaLian
+    availability-zones:
+     DaLian: LightSnow,GreatSnow,AllZone
+    service-url:
+      LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
+      GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+  server:
+    eviction-interval-timer-in-ms: 10000 #清理间隔10s
+    enable-self-preservation: false  
+      
+      

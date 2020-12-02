@@ -1,0 +1,19 @@
+server:
+  port: 20010
+spring:
+  application:
+    name: client-config
+  cloud:
+   config:
+    uri: http://localhost:10010/
+    profile: default
+    label: master
+
+info:
+  app:
+    name: '@project.artifactId@'
+  build:
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+  author:
+    name: '@project.artifactId@'

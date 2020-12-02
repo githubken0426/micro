@@ -1,0 +1,21 @@
+server:
+  port: 3001
+  
+spring:
+ cloud:
+  consul:
+   discovery:
+    instance-id: @project.artifactId@:${server.port}
+   host: localhost
+   port: 8500
+  application:
+    name: @project.artifactId@
+
+info:
+  app:
+    name: @project.artifactId@
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@
+  author:
+    name: ken

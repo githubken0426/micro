@@ -1,0 +1,21 @@
+server:
+  port: 3001
+  
+spring:
+ cloud:
+  consul:
+   discovery:
+    instance-id: consul-waking-insects:${server.port}
+   host: localhost
+   port: 8500
+  application:
+    name: consul-waking-insects
+
+info:
+  app:
+    name: consul-waking-insects
+  build:
+    artifactId: consul-waking-insects
+    version: 0.0.1-SNAPSHOT
+  author:
+    name: ken

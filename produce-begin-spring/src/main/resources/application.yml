@@ -1,0 +1,38 @@
+server:
+  port: 2001
+ 
+spring:
+  application:
+    name: produce
+
+info:
+  app:
+    name: @project.artifactId@
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@
+  author:
+    name: begin-spring(zone:LightSnow)
+
+eureka:
+  instance:
+    hostname: @project.artifactId@
+    appname: produce
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    metadata-map:
+     zone: AllZone #LightSnow
+  client:
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    prefer-same-zone-eureka: true
+    region: DaLian
+    availability-zones:
+     DaLian: AllZone,LightSnow,GreatSnow
+    service-url:
+      LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
+      GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      

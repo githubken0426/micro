@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: prod
+---
+spring:
+  profiles: dev
+  application:
+    name: config-client
+  cloud:
+   config:
+    uri: http://localhost:10010/
+    profile: dev
+    label: master
+---
+spring:
+  profiles: sit
+  application:
+    name: config-client
+  cloud:
+   config:
+    uri: http://localhost:10010/
+    profile: sit
+    label: master
+---
+spring:
+  profiles: prod
+  application:
+    name: config-client
+  cloud:
+   config:
+    uri: http://localhost:10010/
+    profile: prod
+    label: master

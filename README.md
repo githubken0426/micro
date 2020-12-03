@@ -114,3 +114,22 @@ Spring Cloud Config实现了对服务端和客户端中环境变量和属性配�
 /{application}-{profile}.yml(properties)
 
 /{label}/{application}-{profile}.yml(properties)
+
+`@RefreshScope实现自动刷新`
+
+Spring Cloud Config 在项目启动时加载配置内容这一机制，导致了它存在一个缺陷，修改配置文件内容后，不会自动刷新。但它提供了一个刷新机制，需要我们主动触发。那就是 @RefreshScope 注解并结合 actuator ，注意要引入 spring-boot-starter-actuator 包。
+经由@RefreshScope修饰的bean将会被RefreshScope代理，RefreshScope代理的bean强制为懒加载，只有在第一次使用的时候才会生成实例，当其需要刷新配置的时候直接调用destory()方法销毁当前bean，这样在刷新配置后在需要生成的bean已经是根据新的配置信息生成，完成bean的热加载。
+
+# 十、bootstrap.yml（.properties）与application.yml（.properties）执行顺序
+为何需要把 config server 的信息放在 bootstrap.yml 里？
+技术上，bootstrap.yml 是被一个父级的 Spring ApplicationContext 加载的。这个父级的 Spring ApplicationContext是先加载的，在加载application.yml的 ApplicationContext之前。
+当使用 Spring Cloud的时候，配置信息一般是从 config server加载的，为了取得配置信息（比如密码等），你需要一些提早的引导配置。因此，把 config server信息放在 bootstrap.yml，用来加载在这个时期真正需要的配置信息。
+
+10.1 bootstrap.yml 先于 application.yml 加载。
+
+10.2 bootstrap.yml（.properties）用来在程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
+
+10.3 application.yml（.properties)应用程序特有配置信息，可以用来配置后续各个模块中需使用的公共参数等。
+Spring Cloud会创建一个`Bootstrap Context`，作为Spring应用的`Application Context`的父上下文。初始化的时候，`Bootstrap Context`负责从外部源加载配置属性并解析配置。这两个上下文共享一个从外部获取的`Environment`。`Bootstrap`属性有高优先级，默认情况下，它们不会被本地配置覆盖。 `Bootstrap context`和`Application Context`有着不同的约定，所以新增了一个`bootstrap.yml`文件，而不是使用`application.yml` (或者`application.properties`)。保证`Bootstrap Context`和`Application Context`配置的分离。
+可以通过设置`spring.cloud.bootstrap.enabled=false`来禁用`bootstrap`。
+

@@ -1,5 +1,7 @@
 package org.produce.spring.equinox.controller;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,18 @@ public class ProduceController {
 		System.out.println(services);
 		return services;
 	}
-	
+
+	@GetMapping("/hystrix/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public String hystrix(@PathVariable("id") long id) throws InterruptedException {
+		String services = "{'produce':'produce-begin-spring','id':'" + id + "','zoneName':'LightSnow','Services':'"
+				+ discoveryClient.getServices() + "'}";
+		System.out.println(services);
+
+		TimeUnit.SECONDS.sleep(10);
+		return services;
+	}
+
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public String handleFileUpload(@RequestPart(value = "file") MultipartFile file) {

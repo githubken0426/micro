@@ -9,7 +9,7 @@ spring:
       server:
         git:
           uri: https://github.com/githubken0426/micro
-          search-paths: config  #配置文件所在根目录
+          search-paths: config-data/config  #配置文件所在根目录
           username: 271643894@qq.com
           password: wk1985_git
           

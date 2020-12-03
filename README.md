@@ -120,16 +120,40 @@ Spring Cloud Config实现了对服务端和客户端中环境变量和属性配�
 Spring Cloud Config 在项目启动时加载配置内容这一机制，导致了它存在一个缺陷，修改配置文件内容后，不会自动刷新。但它提供了一个刷新机制，需要我们主动触发。那就是 @RefreshScope 注解并结合 actuator ，注意要引入 spring-boot-starter-actuator 包。
 经由@RefreshScope修饰的bean将会被RefreshScope代理，RefreshScope代理的bean强制为懒加载，只有在第一次使用的时候才会生成实例，当其需要刷新配置的时候直接调用destory()方法销毁当前bean，这样在刷新配置后在需要生成的bean已经是根据新的配置信息生成，完成bean的热加载。
 
+`Github中配置 Webhook`
+
+Github提供了一种 Webhook 的方式，当有代码变更的时候，会调用我们设置的地址（actuator/refresh），来实现我们想达到的目的.
+
+`Spring Cloud Bus`
+
+如果只有一个 client 端的话，那我们用 webhook ，设置手动刷新都不算太费事，但是如果端比较多的话呢，一个一个去手动刷新未免有点复杂。这样的话，我们可以借助 Spring Cloud Bus 的广播功能，让 client 端都订阅配置更新事件，当配置更新时，触发其中一个端的更新事件，Spring Cloud Bus 就把此事件广播到其他订阅端，以此来达到批量更新。
+
+1、Spring Cloud Bus 核心原理其实就是利用消息队列做广播，所以要先有个消息队列，目前官方支持 RabbitMQ 和 kafka。
+
+2、在 client 端增加相关的包（spring-cloud-starter-bus-amqp），注意，只在 client 端引入就可以。
+
+3、在配置文件中增加 RabbitMQ相关配置
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    
+4、启动两个或多个client端，访问其中一个的 actuator/bus-refresh 地址，注意还是要用 POST 方式访问。
+
 # 十、bootstrap.yml（.properties）与application.yml（.properties）执行顺序
 为何需要把 config server 的信息放在 bootstrap.yml 里？
+
 技术上，bootstrap.yml 是被一个父级的 Spring ApplicationContext 加载的。这个父级的 Spring ApplicationContext是先加载的，在加载application.yml的 ApplicationContext之前。
 当使用 Spring Cloud的时候，配置信息一般是从 config server加载的，为了取得配置信息（比如密码等），你需要一些提早的引导配置。因此，把 config server信息放在 bootstrap.yml，用来加载在这个时期真正需要的配置信息。
 
-10.1 bootstrap.yml 先于 application.yml 加载。
-
-10.2 bootstrap.yml（.properties）用来在程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
-
-10.3 application.yml（.properties)应用程序特有配置信息，可以用来配置后续各个模块中需使用的公共参数等。
 Spring Cloud会创建一个`Bootstrap Context`，作为Spring应用的`Application Context`的父上下文。初始化的时候，`Bootstrap Context`负责从外部源加载配置属性并解析配置。这两个上下文共享一个从外部获取的`Environment`。`Bootstrap`属性有高优先级，默认情况下，它们不会被本地配置覆盖。 `Bootstrap context`和`Application Context`有着不同的约定，所以新增了一个`bootstrap.yml`文件，而不是使用`application.yml` (或者`application.properties`)。保证`Bootstrap Context`和`Application Context`配置的分离。
 可以通过设置`spring.cloud.bootstrap.enabled=false`来禁用`bootstrap`。
+
+10.1 bootstrap.yml 先于 application.yml 加载。
+10.2 bootstrap.yml（.properties）用来在程序引导时执行，应用于更加早期配置信息读取，如可以使用来配置application.yml中使用到参数等
+10.3 application.yml（.properties)应用程序特有配置信息，可以用来配置后续各个模块中需使用的公共参数等。
+
+
 

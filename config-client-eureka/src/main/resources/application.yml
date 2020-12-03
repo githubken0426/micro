@@ -1,0 +1,30 @@
+server:
+  port: 20011
+info:
+  app:
+    name: '@project.artifactId@'
+  build:
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+  author:
+    name: '@project.artifactId@'
+#配置信息  eureka.client.healthcheck.enabled=true  错误的写在 bootstrap.yml 中（Status： UNKNOWN (1) - config-client-eureka:20011）
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # 展示全部端点（默认展示health,info，其余均禁止）
+      #CORS跨域支持
+      cors:
+        allowed-origins: "*"
+        allowed-methods: GET,POST
+  #health端点的访问权限
+  endpoint:
+    health:
+      #选择展示
+      show-details: always
+  health:
+    mail:
+      enabled: false  # 不监控邮件服务器状态
+      

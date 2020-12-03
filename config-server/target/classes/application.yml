@@ -3,7 +3,7 @@ server:
   
 spring:
   application:
-    name: server-config
+    name: config-server
   cloud:
     config:
       server:
@@ -14,11 +14,33 @@ spring:
           password: wk1985_git
           
 info:
-  profile: dev
   app:
     name: 'config-server'
   build:
     artifactId: 'config-server'
     version: '0.0.1-SNAPSHOT'
   author:
-    name: '${spring.application.name}-${info.profile}'
+    name: '${spring.application.name}'
+
+eureka:
+  instance:
+    hostname: config-server
+    appname: config-server
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    metadata-map:
+     zone: AllZone #GreatSnow
+  client:
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    prefer-same-zone-eureka: true
+    region: DaLian
+    availability-zones:
+     DaLian: AllZone,GreatSnow,LightSnow
+    service-url:
+      LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
+      GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      

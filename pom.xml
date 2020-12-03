@@ -23,6 +23,7 @@
 		<module>config-server</module>
 		<module>config-data</module>
 		<module>config-client</module>
+		<module>config-client-eureka</module>
 	</modules>
 
 	<properties>

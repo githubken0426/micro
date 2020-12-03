@@ -1,5 +1,5 @@
 data:
-  env: prod
+  env: prod-refresh
   user:
     username: prod
     password: prodpwd

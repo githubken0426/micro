@@ -1,10 +1,11 @@
 package org.consumer.feign.controller;
 
-import org.consumer.feign.service.ProduceService;
+import org.consumer.feign.hystrix.ProduceService;
 import org.consumer.feign.service.ProduceUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,12 @@ public class ConsumerController {
 	@ResponseStatus(HttpStatus.OK)
 	public String getServices() {
 		return produceService.consumer();
+	}
+
+	@GetMapping("/hystrix/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public String hystrix(@PathVariable("id") int id) {
+		return produceService.hystrix(id);
 	}
 
 	@PostMapping("/upload")

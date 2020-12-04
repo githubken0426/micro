@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,7 +19,8 @@ import feign.RequestTemplate;
  * 
  * @author kun.f.wang
  */
-@Component
+//@Component
+@Deprecated
 public class CustomRequestInteceptor implements RequestInterceptor {
 	@Autowired
 	private ObjectMapper objectMapper;

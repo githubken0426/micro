@@ -3,6 +3,7 @@ package org.consumer.feign;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
@@ -14,6 +15,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  *
  */
 @EnableFeignClients
+@EnableCircuitBreaker
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = { "org.consumer.feign" }, exclude = DataSourceAutoConfiguration.class)
 public class ConsumerFeignApplication {

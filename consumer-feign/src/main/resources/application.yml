@@ -27,9 +27,7 @@ management:
   endpoints:
     web:
       exposure:
-        #展示某些端点（默认展示health,info，其余均禁止）
-        include: health,info,metrics,instances
-      # CORS跨域支持
+        include: "*"
       cors:
         allowed-origins: "*"
         allowed-methods: GET,POST
@@ -72,4 +70,7 @@ eureka:
       LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
       GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
       AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
-      
+
+feign:
+ hystrix:
+  enabled: true

@@ -1,7 +1,5 @@
 package org.produce.begin.spring.controller;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
@@ -24,21 +22,22 @@ public class ProduceController {
 	@GetMapping("/services/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public String getServices(@PathVariable("id") long id) {
-		String services = "{'produce':'produce-begin-spring','id':'" + id + "','zoneName':'LightSnow','Services':'"
-				+ discoveryClient.getServices() + "'}";
+		String services = "{'method':'services','produce':'produce-begin-spring','id':'" + id
+				+ "','zoneName':'LightSnow','Services':'" + discoveryClient.getServices() + "'}";
 		System.out.println(services);
 		return services;
 	}
 
 	@GetMapping("/hystrix/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String hystrix(@PathVariable("id") long id) throws InterruptedException {
-		String services = "{'produce':'produce-begin-spring','id':'" + id + "','zoneName':'LightSnow','Services':'"
-				+ discoveryClient.getServices() + "'}";
+	public String hystrix(@PathVariable("id") long id) throws Exception {
+		String services = "{'method':'hystrix','produce':'produce-begin-spring','id':'" + id
+				+ "','zoneName':'LightSnow','Services':'" + discoveryClient.getServices() + "'}";
 		System.out.println(services);
 
-		TimeUnit.SECONDS.sleep(10);
-		return services;
+//		TimeUnit.SECONDS.sleep(10);
+		throw new Exception("produce-begin-srping business exception");
+//		return services;
 	}
 
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -46,6 +46,7 @@ eureka:
       GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
       AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
   server:
+    peer-node-read-timeout-ms: 5000 #节点之间数据读取超时时间（ms）default:200
     eviction-interval-timer-in-ms: 10000 #清理间隔10s
     enable-self-preservation: false  #default:'true'自我保护,默认开启状态
   

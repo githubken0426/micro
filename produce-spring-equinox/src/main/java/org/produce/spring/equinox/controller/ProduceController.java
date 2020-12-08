@@ -21,20 +21,21 @@ public class ProduceController {
 
 	@GetMapping("/services/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String getServices(@PathVariable("id") long id) {
+	public String getServices(@PathVariable("id") long id) throws Exception {
 		String services = "{'method':'services','produce':'produce-spring-equinox','id':'" + id
 				+ "','zoneName':'GreatSnow','Services':'" + discoveryClient.getServices() + "'}";
 		System.out.println(services);
-		return services;
+		throw new Exception("produce-spring-equinox [services] caught business exception");
+//		return services;
 	}
 
 	@GetMapping("/hystrix/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String hystrix(@PathVariable("id") long id) throws Exception {
+	public String hystrix(@PathVariable("id") long id) {
 		String services = "{'method':'hystrix','produce':'produce-begin-spring','id':'" + id
 				+ "','zoneName':'LightSnow','Services':'" + discoveryClient.getServices() + "'}";
 		System.out.println(services);
-//		throw new Exception("produce-begin-spring business exception");
+
 		return services;
 	}
 

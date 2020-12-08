@@ -25,6 +25,9 @@
 		<module>config-client</module>
 		<module>config-client-eureka</module>
 		<module>hystrix-dashboard</module>
+		<module>hystrix-turbine</module>
+		<module>hystrix-turbine-amqp</module>
+		<module>zuul-gateway</module>
 	</modules>
 
 	<properties>

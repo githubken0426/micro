@@ -1,0 +1,71 @@
+server:
+  port: 4002
+  
+spring:
+  application:
+    name: hystrix-dashboard-turbine
+    
+info:
+  app:
+    name: '@project.artifactId@'
+  build:
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+  author:
+    name: '@project.artifactId@'
+    
+#公开所有的端点
+management:
+  port: 40020
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: GET,POST
+  endpoint:
+    health:
+      show-details: always
+  health:
+    mail:
+      enabled: false 
+      
+eureka:
+  instance:
+    hostname: @project.artifactId@
+    appname: hystrix
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    metadata-map:
+     zone: AllZone #LightSnow
+  client:
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    prefer-same-zone-eureka: true
+    region: DaLian
+    availability-zones:
+     DaLian: AllZone,LightSnow,GreatSnow
+    service-url:
+      LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
+      GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      
+turbine:
+  app-config: consumer #配置Euraka中的serviceId列表，表明监控哪些服务
+  cluster-name-expression: new String('default')
+  combine-host-port: true
+  
+#cluster-name-expression: 指定了集群名称为default，当我们服务数量非常多的时候，可以启动多个Turbine服务来构建不同的聚合集群，而该参数可以用来区分这些不同的聚合集群，
+#同时该参数值可以在Hystrix仪表盘中用来定位不同的聚合集群，只需要在Hystrix Stream的URL中通过cluster参数来指定。
+
+# 省略cluster-name-expression时，此时turbine.aggregator.clusterConfig需要配置想要监控的应用名称，需要监控应用名称必须大写
+# 当cluster-name-expression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default
+# 当cluster-name-expression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: consumer，则需要配置，
+# 同时turbine.aggregator.clusterConfig: consumer cluster-name-expression: new String('default')
+
+#combine-host-port:默认true，可以让同一主机上的服务通过主机名与端口号的组合来进行区分，
+#以host来区分不同的服务,这会使得在本地调试的时候,本机上的不同服务聚合成一个服务来统计，监控中host集群数为1（本地host是一样的）。
+

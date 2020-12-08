@@ -1,0 +1,60 @@
+server:
+  port: 4003
+  
+spring:
+  application:
+    name: hystrix-turbine-ampq
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    
+info:
+  app:
+    name: '@project.artifactId@'
+  build:
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+  author:
+    name: '@project.artifactId@'
+    
+#公开所有的端点
+management:
+  port: 40030
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: GET,POST
+  endpoint:
+    health:
+      show-details: always
+  health:
+    mail:
+      enabled: false 
+      
+eureka:
+  instance:
+    hostname: @project.artifactId@
+    appname: hystrix
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    metadata-map:
+     zone: AllZone #LightSnow
+  client:
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    prefer-same-zone-eureka: true
+    region: DaLian
+    availability-zones:
+     DaLian: AllZone,LightSnow,GreatSnow
+    service-url:
+      LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
+      GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+      AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
+

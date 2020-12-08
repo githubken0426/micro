@@ -2,6 +2,8 @@ package org.consumer.ribbon.controller;
 
 import java.util.List;
 
+import org.consumer.ribbon.service.ConsumerRibbonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ConsumerController extends AbstractController {
+	@Autowired
+	public ConsumerRibbonService consumerService;
 
-	@GetMapping("/consumer/{id}")
+	@GetMapping("/services/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String getServices(@PathVariable("id") long id) {
-		String serviceUrl = "http://produce/produce/services/{1}";
-		String obj = restTemplate.getForObject(serviceUrl, String.class, id);
-		return obj;
+	public String services(@PathVariable("id") long id) {
+		return consumerService.services(id);
+	}
+
+	@GetMapping("/hystrix/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public String hystrix(@PathVariable("id") long id) {
+		return consumerService.hystrix(id);
 	}
 
 	@GetMapping("/user-instance/{serviceId}")

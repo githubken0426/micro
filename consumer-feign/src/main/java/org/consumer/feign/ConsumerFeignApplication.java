@@ -8,11 +8,12 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * 因为feign底层是使用了ribbon作为负载均衡的客户端，而ribbon的负载均衡也是依赖于eureka
- * 获得各个服务的地址，所以要引入eureka-client
- * 
- * @author kun.f.wang
+ *	 因为feign底层是使用了ribbon作为负载均衡的客户端，而ribbon的负载均衡也是依赖于eureka获得各个服务的地址，所以要引入eureka-client
  *
+ *	Feign默认使用的连接工具实现类，发现只要你有body体对象，就会强制的把GET请求转换成POST请求
+ * 	1、开启feign.httpclient.enabled: true
+ * 	2、 pom中增加feign-httpclient支持
+ * @author kun.f.wang
  */
 @EnableFeignClients
 @EnableCircuitBreaker

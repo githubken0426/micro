@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
-import org.consumer.feign.service.ProduceUploadService;
+import org.consumer.feign.service.ConsumerUploadService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 @SpringBootTest
 public class ConsumerControllerTest {
 	@Autowired
-	private ProduceUploadService produceUploadService;
+	private ConsumerUploadService produceUploadService;
 
 	@Test
 	public void testHandleFileUpload() {

@@ -36,7 +36,7 @@ public class ProduceController {
 		System.out.println(services);
 
 //		TimeUnit.SECONDS.sleep(10);
-		throw new Exception("produce-begin-srping business exception");
+		throw new Exception("produce-begin-srping [hystrix] caught business exception");
 //		return services;
 	}
 

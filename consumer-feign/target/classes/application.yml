@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: consumer-feign
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   main:
     allow-bean-definition-overriding: true
   boot:
@@ -31,7 +36,6 @@ management:
       cors:
         allowed-origins: "*"
         allowed-methods: GET,POST
-
   #health端点的访问权限
   endpoint:
     health:
@@ -40,6 +44,7 @@ management:
   health:
     mail:
       enabled: false  #不监控邮件服务器状态
+      
 info:
   app:
     name: consumer-feign
@@ -52,7 +57,7 @@ info:
 eureka:
   instance:
     hostname: consumer-feign
-    appname: consumer-feign
+    appname: consumer
     prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${server.port}
     metadata-map:

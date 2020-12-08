@@ -1,7 +1,7 @@
 package org.consumer.feign.controller;
 
-import org.consumer.feign.hystrix.ProduceService;
-import org.consumer.feign.service.ProduceUploadService;
+import org.consumer.feign.hystrix.ConsumerFeignService;
+import org.consumer.feign.service.ConsumerUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class ConsumerController {
 	@Autowired
-	private ProduceService produceService;
+	private ConsumerFeignService produceService;
 	@Autowired
-	private ProduceUploadService produceUploadService;
+	private ConsumerUploadService produceUploadService;
 
-	@GetMapping("/consumer")
+	@GetMapping("/services/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String getServices() {
-		return produceService.consumer();
+	public String services(@PathVariable("id") long id) {
+		return produceService.services(id);
 	}
 
 	@GetMapping("/hystrix/{id}")

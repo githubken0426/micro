@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: consumer-ribbon
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   boot:
     admin:
       client:
@@ -49,7 +54,7 @@ info:
 eureka:
   instance:
     hostname: consumer-ribbon
-    appname: consumer-ribbon
+    appname: consumer
     prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${server.port}
     metadata-map:

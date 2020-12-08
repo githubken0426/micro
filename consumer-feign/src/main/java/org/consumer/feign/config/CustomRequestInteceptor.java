@@ -15,7 +15,7 @@ import feign.RequestTemplate;
 
 /**
  * feign不支持GET请求直接传递POJO对象的，目前解决方法如下： 把POJO拆散城一个一个单独的属性放在方法参数中 把方法参数编程Map传递
- * 使用GET传递@RequestBody，但此方式违反restful风格
+ * 	使用GET传递@RequestBody，但此方式违反restful风格
  * 
  * @author kun.f.wang
  */

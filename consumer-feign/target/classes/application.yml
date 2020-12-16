@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: consumer-feign
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -79,3 +80,7 @@ eureka:
 feign:
  hystrix:
   enabled: true
+
+# 是否启动swagger
+swagger:
+  open: true

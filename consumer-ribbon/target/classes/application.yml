@@ -72,4 +72,7 @@ eureka:
       LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
       GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
       AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
-      
+  
+# 是否启动swagger
+swagger:
+  open: true    

@@ -27,8 +27,11 @@ public class PreTypeFilter extends ZuulFilter {
 				FilterConstants.PRE_DECORATION_FILTER_ORDER);
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
-
+		String requestUrl = request.getRequestURL().toString();
 		log.info("[Pretype]: send {} request to {}", request.getMethod(), request.getRequestURL().toString());
+		if (requestUrl != null && requestUrl.contains("/v2/api-docs")) {
+			return true;
+		}
 
 		Object accessToken = request.getHeader("preAccessToken");
 		if (accessToken == null) {

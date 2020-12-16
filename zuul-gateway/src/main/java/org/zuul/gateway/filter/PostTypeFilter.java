@@ -21,9 +21,11 @@ public class PostTypeFilter extends ZuulFilter {
 				FilterConstants.RIBBON_ROUTING_FILTER_ORDER);
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
-
-		log.info("[Posttype]: send {} request to {}", request.getMethod(), request.getRequestURL().toString());
-
+		String requestUrl = request.getRequestURL().toString();
+		log.info("[Posttype]: send {} request to {}", request.getMethod(), requestUrl);
+		if (requestUrl != null && requestUrl.contains("/v2/api-docs")) {
+			return true;
+		}
 		Object accessToken = request.getHeader("postAccessToken");
 		if (accessToken == null) {
 			log.warn("[Posttype]: access {} token is empty", FilterConstants.POST_TYPE);

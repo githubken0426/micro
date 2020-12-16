@@ -1,7 +1,14 @@
 server:
   port: 5001
-  
+
 spring:
+  servlet: #springboot1.0 版本为http
+    multipart:
+      enabled: true   # 启用http上传处理
+      max-file-size: 20MB # 设置单个文件的最大长度
+      max-request-size: 50MB # 设置最大的请求文件的大小
+      file-size-threshold: 1MB  # 当上传文件达到1MB的时候进行磁盘写入
+      location: /  # 上传的临时目录
   application:
     name: zuul-gateway
     
@@ -41,10 +48,7 @@ management:
     web:
       exposure:
         include: "*"
-        
-ribbon:
-  eureka:
-    enabled: false
+
 
 zuul:
   ignoredServices: 'produce,hystrix'
@@ -52,11 +56,11 @@ zuul:
   routes:
     consumer-ribbon:
       path: /consumer-ribbon/**
-      url: http://localhost:3001/
+      url: http://localhost:3001
       serviceId: consumer-ribbon
     consumer-feign:
       path: /consumer-feign/**
-      url: http://localhost:3002/
+      url: http://localhost:3002
       serviceId: consumer-feign
 
  

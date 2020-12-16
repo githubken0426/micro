@@ -35,4 +35,28 @@ eureka:
       LightSnow: http://eureka-server:eureka-server@server-light-snow:1001/eureka/
       GreatSnow: http://eureka-server:eureka-server@server-great-snow:1002/eureka/
       AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
-      
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        
+ribbon:
+  eureka:
+    enabled: false
+
+zuul:
+  ignoredServices: 'produce,hystrix'
+  prefix: /open-service
+  routes:
+    consumer-ribbon:
+      path: /consumer-ribbon/**
+      url: http://localhost:3001/
+      serviceId: consumer-ribbon
+    consumer-feign:
+      path: /consumer-feign/**
+      url: http://localhost:3002/
+      serviceId: consumer-feign
+
+ 

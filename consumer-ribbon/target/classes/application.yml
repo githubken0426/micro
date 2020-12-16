@@ -54,7 +54,7 @@ info:
 eureka:
   instance:
     hostname: consumer-ribbon
-    appname: consumer
+    appname: consumer-ribbon
     prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${server.port}
     metadata-map:

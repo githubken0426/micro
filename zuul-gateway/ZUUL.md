@@ -6,17 +6,20 @@ zuul 是netflix开源的一个API Gateway 服务器, 本质上是一个web servl
 zuul的核心是一系列的filters, 其作用可以类比Servlet框架的Filter，或者AOP。
 zuul把Request route到 用户处理逻辑 的过程中，这些filter参与一些过滤处理，比如`Authentication`，`LoadShedding`等。
 
-Zuul提供了一个框架，可以对过滤器进行动态的加载，编译，运行。Zuul的过滤器之间没有直接的相互通信，他们之间通过一个RequestContext的静态类来进行数据传递的。RequestContext类中有ThreadLocal变量来记录每个Request所需要传递的数据。Zuul的过滤器是由Groovy写成，这些过滤器文件被放在Zuul Server上的特定目录下面，Zuul会定期轮询这些目录，修改过的过滤器会动态的加载到Zuul Server中以便过滤请求使用。
+Zuul 内部提供了一个动态读取、编译和运行这些 Filter 的机制。Filter 之间不直接通信，在请求线程中会通过 RequestContext 来共享状态，它的内部是用 ThreadLocal 实现的，当然你也可以在 Filter之间使用 ThreadLocal 来收集自己需要的状态或数据。
+
+Zuul的过滤器是由Groovy写成，这些过滤器文件被放在Zuul Server上的特定目录下面，Zuul会定期轮询这些目录，修改过的过滤器会动态的加载到Zuul Server中以便过滤请求使用。
+
 
 `1.1	标准的过滤器：` Zuul大部分功能都是通过过滤器来实现的。Zuul中定义了四种标准过滤器类型，这些过滤器类型对应于请求的典型生命周期。
 
-(1) PRE：这种过滤器在请求被路由之前调用。我们可利用这种过滤器实现身份验证、在集群中选择请求的微服务、记录调试信息等。
+(1) `pre` ：在请求被路由之前调用。如果需要对请求进行预处理，比如鉴权、限流等，都应考虑在此类 Filter 实现。
 
-(2) ROUTING：这种过滤器将请求路由到微服务。这种过滤器用于构建发送给微服务的请求，并使用Apache HttpClient或Netfilx Ribbon请求微服务。
+(2) `route` ：路由动作的执行者，将请求路由到微服务。这种过滤器用于构建发送给微服务的请求，并使用Apache HttpClient或Netfilx Ribbon请求微服务。
 
-(3) POST：这种过滤器在路由到微服务以后执行。这种过滤器可用来为响应添加标准的HTTP Header、收集统计信息和指标、将响应从微服务发送给客户端等。
+(3) `post` ：在源服务返回结果或者异常信息发生后执行。如果需要对返回信息做一些处理，则在此类 Filter 进行处理，为响应添加标准的HTTP Header、收集统计信息和指标、将响应从微服务发送给客户端等。
 
-(4) ERROR：在其他阶段发生错误时执行该过滤器。
+(4) `error` ：在整个生命周期内如果发生异常，则会进入 error Filter，可做全局异常处理。
 
 `1.2	内置的特殊过滤器：` zuul还提供了一类特殊的过滤器，分别为：StaticResponseFilter和SurgicalDebugFilter。
 
@@ -24,9 +27,12 @@ StaticResponseFilter：StaticResponseFilter允许从Zuul本身生成响应，而
 
 SurgicalDebugFilter：SurgicalDebugFilter允许将特定请求路由到分隔的调试集群或主机。
 
-`1.3	自定义过滤器：` 除了默认的过滤器类型，Zuul还允许我们创建自定义的过滤器类型。
+`1.3	自定义过滤器：` 除了默认的过滤器类型，Zuul还允许我们创建自定义的过滤器类型。例如，我们可以定制一种STATIC类型的过滤器，直接在Zuul中生成响应，而不将请求转发到后端的微服务。
 
-例如，我们可以定制一种STATIC类型的过滤器，直接在Zuul中生成响应，而不将请求转发到后端的微服务。
+`1.4	禁用/替换 原生过滤器：` 
+如果你不想使用原生的Filter功能，可以采取替代实现的方式，覆盖掉其原生代码; 
+
+也可以采取禁用策略，语法如下： zuul.`<SimpleClassName>`.`<flterType>`.disable=true  比如要禁用 SendErrorFilter，在配置文件中添加 zuul.`SendErrorFilter`.`error`.disable=true即可。
 # 二、zuul提供的功能
 Zuul可以通过加载动态过滤机制，实现以下功能：
 

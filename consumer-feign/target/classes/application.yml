@@ -57,7 +57,7 @@ info:
 eureka:
   instance:
     hostname: consumer-feign
-    appname: consumer
+    appname: consumer-feign
     prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${server.port}
     metadata-map:

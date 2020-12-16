@@ -30,15 +30,23 @@ eureka.instance.instanceId 也可以不设置，直接使用缺省值(client.hos
 # 三、Eureka控制台简介
 # 1.Eureka控制台HOME
 【System Status】 
+
 (1) Environment:环境，默认为test， 该参数在实际使用过程中，可以不用更改。 
+
 (2) Data center： 数据中心，使用的是默认的是 “MyOwn”。 
+
 (3) Current time：当前的系统时间。 
+
 (4) Uptime： 已经运行了多少时间。 
+
 (5) Lease expiration enabled：是否启用租约过期 ， 自我保护机制关闭时，该值默认是true， 自我保护机制开启之后为false。 
+
 (6) Renews threshold： 每分钟最少续约数。  
+
 (7) Renews (last min)： 最后一分钟的续约数量（不含当前，1分钟更新一次）。
 # 2.DS Replicas 和 Instances currently registered with Eureka
 (1) DS Replicas:表示这个地址是这个Eureka Server相邻节点，互为一个集群。 
+
 (2) Instances currently registered with Eureka:表示各个微服务注册到这个服务上的实例信息。 
 # 2.1.Eureka自我保护机制关闭(eureka.server.enable-self-preservation: false)
 RENEWALS ARE LESSER THAN THE THRESHOLD. THE SELF PRESERVATION MODE IS TURNED OFF.THIS MAY NOT PROTECT INSTANCE EXPIRY IN CASE OF NETWORK/OTHER PROBLEMS.
@@ -92,7 +100,7 @@ eureka.server.enable-self-preservation: false
 # 八、Spring Cloud Feign
 8.1 Spring Cloud Feign是一套基于Netflix Feign实现的声明式服务调用客户端。
 
-8.2 Feign使得编写Web服务客户端变得更加简单。我们只需要通过创建接口并用注解来配置它既可完成对Web服务接口的绑定。
+8.2 Feign使得编写Web服务客户端变得更加简单。我们只需要通过创建接口并用注解来配置它既可完成对Web服务接口的绑定，是一个轻量级RESTful的HTTP服务客户端。
 
 8.3 Feign具备可插拔的注解支持，包括Feign注解、JAX-RS注解。
 
@@ -101,6 +109,11 @@ eureka.server.enable-self-preservation: false
 8.5 Feign调用报错The bean 'XXX.FeignClientSpecification', defined in null, could not be registered:
 把多个消费者放在一个控制层的包的里的时候会包这个错，那是因为，多个同名的消费者早在注册中心都是同名注册的，
 所以需要配置spring.main.allow-bean-definition-overriding=true
+
+# OpenFeign
+8.6 OpenFeign是Spring Cloud 在Feign（Feign停更后的替代者）的基础上支持了Spring MVC的注解，如@RequesMapping等等。
+
+8.7 OpenFeign的@FeignClient可以解析SpringMVC的@RequestMapping注解下的接口。
 # 九、Spring Cloud Config
 Spring Cloud Config是Spring Cloud团队创建的一个全新项目，用来为分布式系统中的基础设施和微服务应用提供集中化的外部配置支持，它分为服务端与客户端两个部分。
 

@@ -3,7 +3,7 @@ server:
   
 spring:
   application:
-    name: hystrix-dashboard-turbine
+    name: hystrix-turbine
     
 info:
   app:
@@ -54,7 +54,7 @@ eureka:
       AllZone: http://eureka-server:eureka-server@server-light-snow:1001/eureka/,http://eureka-server:eureka-server@server-great-snow:1002/eureka/
       
 turbine:
-  app-config: consumer #配置Euraka中的serviceId列表，表明监控哪些服务
+  app-config: consumer-feign,consumer-ribbon #配置Euraka中的serviceId列表，表明监控哪些服务
   cluster-name-expression: new String('default')
   combine-host-port: true
   
